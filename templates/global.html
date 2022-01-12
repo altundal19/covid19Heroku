@@ -1,0 +1,173 @@
+{% extends "layout.html" %}
+{% block title %}Global{% endblock %}
+{% block content %}
+<div class="container mx-auto">
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+
+    {% for message in messages %}
+    <p class="text-danger text-center">{{message}}</p>
+    {% endfor %}
+
+    {% endif %}
+    {% endwith %}
+    <div class="row">
+        <div class="col-6">
+            <label for="country">Country</label>
+            <select id="sel_country" class="form-select mb-4" name="country" aria-label=".form-select-sm example">
+                {% if fetched_country %}
+
+                {% for c in fetched_country %}
+                <option>{{c[0]}}</option>
+                {% endfor %}
+
+                {% endif %}
+            </select>
+        </div>
+
+        <div class="col-6">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end">
+                    <li id="4" class="page-item"><a class="page-link">first</a></li>
+                    <li id="1" class="page-item"><a class="page-link">{{paginationValues[0]}}</a></li>
+
+                    <li id="2" class="page-item"><a class="page-link">{{paginationValues[1]}}</a></li>
+                    <li id="3" class="page-item"><a class="page-link">{{paginationValues[2]}}</a></li>
+                    <script>
+                        l1 = document.getElementById("1")
+                        l2 = document.getElementById("2")
+                        l3 = document.getElementById("3")
+                        l4 = document.getElementById("4")
+
+                        let params = (new URL(document.location)).searchParams;
+                        let name = params.get("countryName");
+                        let start = params.get("startDate");
+                        let end = params.get("endDate");
+                        let url = "/global?"
+
+                        if (name != null) {
+                            url = url + "countryName=" + name + "&"
+                        }
+                        if (start != null) {
+                            url = url + "startDate=" + start + "&"
+                        }
+                        if (end != null) {
+                            url = url + "endDate=" + end + "&"
+                        }
+                        l1.firstChild.href = url + "pageNumber=" + l1.firstChild.innerText
+                        l2.firstChild.href = url + "pageNumber=" + l2.firstChild.innerText
+                        l3.firstChild.href = url + "pageNumber=" + l3.firstChild.innerText
+                        l4.firstChild.href = url + "pageNumber=1"
+                    </script>
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <p>Tick the checkboxes if you want to filter by start or end date</p>
+    <div class="row">
+
+        <div class="col-6">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <span class="input-group-text" id="basic-addon1">Start Date</span>
+
+                        <input type="checkbox" id="startDateCheckBox" aria-label="Checkbox for following text input">
+                    </div>
+                </div>
+                <input type="text" id="startDate" class="form-control" aria-label="Text input with checkbox"
+                    placeholder="yyyy-mm-dd">
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="input-group mb-6">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <span class="input-group-text" id="basic-addon1">End Date</span>
+
+                        <input type="checkbox" id="endDateCheckBox" value="sel"
+                            aria-label="Checkbox for following text input">
+                    </div>
+                </div>
+                <input type="text" id="endDate" class="form-control" aria-label="Text input with checkbox"
+                    placeholder="yyyy-mm-dd">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" value ="ASC" name="flexRadioDefault" id="flexRadioDefault1" checked>
+            <label class="form-check-label" for="flexRadioDefault1">
+                Ascending by date
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" value="DESC"name="flexRadioDefault" id="flexRadioDefault2">
+            <label class="form-check-label" for="flexRadioDefault2">
+              Descending by date
+            </label>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <button type="button" onClick="filter()" class="btn btn-primary my-3"><a
+                    class="link-light text-decoration-none" id="filter1" href="#">Filter</a></button>
+            <script>
+                function filter() {
+                    filter1 = document.getElementById("filter1")
+                    startDate = document.getElementById("startDate").value
+                    endDate = document.getElementById("endDate").value
+                    country = document.getElementById("sel_country").value
+                    endDateCheckBox = document.getElementById("endDateCheckBox").checked
+                    startDateCheckBox = document.getElementById("startDateCheckBox").checked
+                    radioasc = document.getElementById("flexRadioDefault1")
+                    if(radioasc.checked)
+                        filter1.href = "/global?order=ASC"
+                    else{
+                        filter1.href = "/global?order=DESC"
+                    }
+                    
+                    if (country !== "isAdmin") {
+                        filter1.href += "&countryName=" + country
+                    }
+                    if (startDateCheckBox == true) {
+                        filter1.href += "&startDate=" + startDate
+                    }
+                    if (endDateCheckBox == true) {
+                        filter1.href += "&endDate=" + endDate
+                    }
+                    
+                    window.location.replace(filter1.href)
+                }
+            </script>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                {% for header in header %}
+                <th scope="col">{{header}}</th>
+                {% endfor %}
+
+            </tr>
+        </thead>
+        <tbody>
+            {% if result %}
+            {% for r in result %}
+            <tr>
+                {% for w in r %}
+
+                <th scope="row">{{w}}</th>
+                {% endfor %}
+
+            </tr>
+            {% endfor %}
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

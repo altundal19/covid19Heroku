@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block title %}Country{% endblock %}
+{% block content %}
+<div class="container">
+
+    <h1 class="text-center">Covid19 Related Details About Countries</h1>
+    <p class="text-center">Click on the country that you want to display related data</p>
+    <div>
+        <div class="row d-flex justify-content-center">
+
+            {% for country in countries %}
+            <a href="/countries/{{country[0]}}" class="col-2 countries-card-link text-decoration-none mt-4 px-0 mx-3">
+                <div class="card country-card">
+                    <h5 class="card-title">{{country[1]}}</h5>
+                </div>
+            </a>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

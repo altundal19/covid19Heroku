@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+{% block title %}Death{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row my-2 d-flex justify-content-between">
+        <h3 class="fw-bold text-info col-4">Deaths</h3>
+        {% if isadmin == True %}
+        <div class="col-2">
+            <a href="/edit-death" role="button" aria-pressed="true"
+                class="btn btn-warning active w-100 edit-btn">Edit</a>
+        </div>
+        {% endif %}
+    </div>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+
+    {% for message in messages %}
+    <p class="text-danger text-center">{{message}}</p>
+    {% endfor %}
+
+    {% endif %}
+    {% endwith %}
+    <div class="row">
+        <div class="col-6">
+            <div class="row justify-content-start align-items-center">
+                <div class="col-6">
+                    <select id="sel_country" class="form-select" name="country" aria-label=".form-select-sm example">
+                        {% if countries %}
+
+                        {% for c in countries %}
+                        <option>{{c[0]}}</option>
+                        {% endfor %}
+
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="col-4">
+                    <button type="button" id="filter1" class="btn btn-primary w-100 my-3"><a
+                            class="link-light text-decoration-none" id="tableFilter" href="#">Filter</a></button>
+                    <script>
+                        document.querySelector("#filter1").addEventListener("click", function () {
+                            tableFilter = document.getElementById("tableFilter")
+                            country = document.getElementById("sel_country").value
+                            tableFilter.href = "/death?"
+                            if (country !== "Select Country") {
+                                tableFilter.href += "countryName=" + country
+                            }
+                            window.location.replace(tableFilter.href)
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <nav aria-label="Page navigation" class="row h-100 d-flex align-items-center">
+                <ul class="pagination justify-content-end mb-0">
+                    <li id="4" class="page-item"><a class="page-link">first</a></li>
+                    <li id="1" class="page-item"><a class="page-link">{{paginationValues[0]}}</a></li>
+                    <li id="2" class="page-item"><a class="page-link">{{paginationValues[1]}}</a></li>
+                    <li id="3" class="page-item"><a class="page-link">{{paginationValues[2]}}</a></li>
+                    <script>
+                        l1 = document.getElementById("1")
+                        l2 = document.getElementById("2")
+                        l3 = document.getElementById("3")
+                        l4 = document.getElementById("4")
+
+                        let params = (new URL(document.location)).searchParams;
+                        let name = params.get("countryName");
+                        let url = "/death?"
+
+                        if (name != null) {
+                            url = url + "countryName=" + name + "&"
+                        }
+                        l1.firstChild.href = url + "pageNumber=" + l1.firstChild.innerText
+                        l2.firstChild.href = url + "pageNumber=" + l2.firstChild.innerText
+                        l3.firstChild.href = url + "pageNumber=" + l3.firstChild.innerText
+                        l4.firstChild.href = url + "pageNumber=1"
+                    </script>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="row my-3 mx-0">
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Country</th>
+                        {% for header in headings %}
+                        <th scope="col">{{header}}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in deaths %}
+                    <tr>
+                        {% for cell in row %}
+                        <td>
+                            <div class="data">
+                                {{cell}}
+                            </div>
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

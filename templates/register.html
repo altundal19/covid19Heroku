@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<section>
+  <div class="mask d-flex align-items-center">
+    <div class="container">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="card" style="border-radius: 15px;">
+            <div class="card-body p-5">
+              <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+              {% with messages = get_flashed_messages() %}
+              {% if messages %}
+
+              {% for message in messages %}
+              <p class="text-danger text-center">{{message}}</p>
+              {% endfor %}
+
+              {% endif %}
+              {% endwith %}
+              <form action="register" method="post">
+
+                <div class="form-outline mb-4">
+                  <input type="text" name="name" id="form3Example1cg" class="form-control form-control-lg"
+                    placeholder="Your name" />
+                </div>
+                <div class="form-outline mb-4">
+                  <input type="text" name="surname" id="form3Example1cg" class="form-control form-control-lg"
+                    placeholder="Your surname" />
+                </div>
+
+                <div class="form-outline mb-4">
+                  <input type="email" name="email" id="form3Example3cg" class="form-control form-control-lg"
+                    placeholder="Your Email" />
+                </div>
+
+                <div class="form-outline mb-4">
+                  <input type="password" name="password" id="form3Example4cg" class="form-control form-control-lg"
+                    placeholder="Password" />
+                </div>
+
+                <div class="form-outline mb-4">
+                  <input type="password" name="password_conf" id="form3Example4cdg" class="form-control form-control-lg"
+                    placeholder="Repeat your password" />
+                </div>
+                <div class="form-outline mb-4">
+                  <input type="text" name="address" id="form3Example1cg" class="form-control form-control-lg"
+                    placeholder="Address" />
+                </div>
+
+                <select class="form-select form-select-lg mb-4" name="country" aria-label=".form-select-sm example">
+                  {% if fetched_country %}
+
+                  {% for c in fetched_country %}
+                  <option value={{c[0]}}>{{c[0]}}</option>
+                  {% endfor %}
+
+                  {% endif %}
+
+                </select>
+
+                <div class="d-flex justify-content-center">
+                  <button type="submit"
+                    class="btn btn-success btn-block btn-lg gradient-custom-4 text-light">Register</button>
+                </div>
+
+                <p class="text-center text-muted mt-5 mb-0">Aldready have an account? <a href="/login"
+                    class="fw-bold text-body"><u>Login here</u></a></p>
+
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

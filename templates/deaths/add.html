@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block title %}Death{% endblock %}
+{% block content %}
+<div class="container">
+    <h3 class="mx-auto">
+        <h3>Add New Death Data</h3>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+
+        {% for message in messages %}
+        <p class="text-danger text-start fs-3 fw-bold">{{message}}</p>
+        {% endfor %}
+
+        {% endif %}
+        {% endwith %}
+        <form action="/add-death" method="POST">
+            {% for header in headings %}
+            <div class="mb-3">
+                <label for="{{header}}" class="form-label">{{header}}</label>
+                <input type="text" name="{{header}}" class="form-control">
+            </div>
+            {% endfor %}
+            <p>Country</p>
+            <select class=" form-select mb-4" name="country" aria-label=".form-select-sm example">
+                {% if countries %}
+
+                {% for c in countries %}
+                <option>{{c[0]}}</option>
+                {% endfor %}
+
+                {% endif %}
+            </select>
+            <div class="mb-3">
+                <label for="date" class="form-label">Date</label>
+                <p>Please enter date in 'YY-MM-DD' format</p>
+                <input type="text" name="date" class="form-control" id="total_cases">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+</div>
+{% endblock %}

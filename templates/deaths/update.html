@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block title %}Death{% endblock %}
+{% block content %}
+<div class="container">
+    <h3>Update Last Day Death Data</h3>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+
+    {% for message in messages %}
+    <p class="text-danger text-center">{{message}}</p>
+    {% endfor %}
+
+    {% endif %}
+    {% endwith %}
+
+    <form action="/update-death" method="POST">
+        <p>Reminder: Update will be based on country and the date, They will not be updated</p>
+        <select class="form-select mb-4" name="country" aria-label=".form-select-sm example">
+            {% if fetched_country %}
+
+            {% for c in fetched_country %}
+            <option>{{c[0]}}</option>
+            {% endfor %}
+
+            {% endif %}
+        </select>
+        <div class="mb-3">
+            <label for="date" class="form-label">DATE</label>
+            <input type="text" name="date" class="form-control" id="total_cases" aria-describedby="emailHelp">
+        </div>
+        {% for header in headings %}
+        <div class="mb-3">
+            <label for="{{header}}" class="form-label">{{header}}</label>
+            <input type="text" name="{{header}}" class="form-control">
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}

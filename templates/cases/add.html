@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block title %}Case{% endblock %}
+{% block content %}
+
+<div class="container">
+    <h3 class="mx-auto">Add New Case Data</h3>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+
+    {% for message in messages %}
+    <p class="text-danger text-start fs-3 fw-bold">{{message}}</p>
+    {% endfor %}
+
+    {% endif %}
+    {% endwith %}
+    <form action="/add-case" method="POST">
+        <div class="mb-3">
+            <label for="total_cases" class="form-label">Total Cases</label>
+            <input type="text" name="total_cases" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="new_cases" class="form-label">new_cases</label>
+            <input type="text" name="new_cases" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="total_cases_per_million" class="form-label">total_cases_per_million</label>
+            <input type="text" name="total_cases_per_million" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="new_cases_per_million" class="form-label">new_cases_per_million</label>
+            <input type="text" name="new_cases_per_million" class="form-control">
+        </div>
+        <div class=" mb-3">
+            <label for="new_cases_smoothed" class="form-label">new_cases_smoothed</label>
+            <input type="text" name="new_cases_smoothed" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="new_cases_smoothed_per_million" class="form-label">new_cases_smoothed_per_million Cases</label>
+            <input type="text" name="new_cases_smoothed_per_million" class="form-control">
+        </div>
+        <p>Country</p>
+        <select class=" form-select mb-4" name="country" aria-label=".form-select-sm example">
+            {% if countries %}
+
+            {% for c in countries %}
+            <option>{{c[0]}}</option>
+            {% endfor %}
+
+            {% endif %}
+        </select>
+        <div class="mb-3">
+            <label for="date" class="form-label">Date</label>
+            <p>Please enter date in 'YY-MM-DD' format</p>
+            <input type="text" name="date" class="form-control" id="total_cases">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>
+{% endblock %}

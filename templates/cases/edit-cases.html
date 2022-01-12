@@ -1,0 +1,139 @@
+{% extends "layout.html" %}
+{% block title %}Case{% endblock %}
+{% block content %}
+<div class="container-fluid">
+
+    <h3 class="fw-bold text-info">Cases</h3>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+
+    {% for message in messages %}
+    <p class="text-danger text-center">{{message}}</p>
+    {% endfor %}
+
+    {% endif %}
+    {% endwith %}
+    <div class="row w-50 mt-3 add-del-btn-cont">
+        <div class="col-4">
+            <a id="addCase" href="/add-case" class="btn btn-warning w-100" role="button" aria-pressed="true">Add</a>
+        </div>
+        <div class="col-4">
+            <a id="deleteCase" href="#" onclick="MyFunction()" class="btn btn-danger w-100" role="button"
+                aria-pressed="true">Delete Record of Last Date</a>
+
+            <select id="del_country" class="form-select mb-4" name="country" aria-label=".form-select-sm">
+                {% if countries %}
+
+                {% for c in countries %}
+                <option>{{c[0]}}</option>
+                {% endfor %}
+
+                {% endif %}
+            </select>
+            <script>
+                function MyFunction() {
+                    if (confirm('Are you sure you want to delete the last record?')) {
+                        a = document.getElementById("deleteCase")
+                        sel = document.getElementById("del_country")
+                        a.href = "/delete-case/" + sel.value
+                    }
+                }
+            </script>
+        </div>
+        <div class="col-4">
+            <a id="editCase" href="/update-case" class="btn btn-info w-100" role="button" aria-pressed="true">Edit</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+            <div class="row justify-content-start align-items-center">
+                <div class="col-6">
+                    <select id="sel_country" class="form-select" name="country" aria-label=".form-select-sm example">
+                        {% if countries %}
+
+                        {% for c in countries %}
+                        <option>{{c[0]}}</option>
+                        {% endfor %}
+
+                        {% endif %}
+                    </select>
+                </div>
+                <div class="col-4">
+                    <button type="button" onClick="filter()" class="btn btn-primary w-100 my-3"><a
+                            class="link-light text-decoration-none" id="caseFilter" href="#">Filter</a></button>
+                    <script>
+                        function filter() {
+                            console.log("in filter");
+                            caseFilter = document.getElementById("caseFilter");
+                            country = document.getElementById("sel_country").value
+                            caseFilter.href = "/edit-case?";
+                            if (country !== "Select Country") {
+                                caseFilter.href += "countryName=" + country
+                            }
+                            window.location.replace(caseFilter.href)
+                        };
+                    </script>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6">
+            <nav aria-label="Page navigation" class="row h-100 d-flex align-items-center">
+                <ul class="pagination justify-content-end mb-0">
+                    <li id="4" class="page-item"><a class="page-link">first</a></li>
+                    <li id="1" class="page-item"><a class="page-link">{{paginationValues[0]}}</a></li>
+                    <li id="2" class="page-item"><a class="page-link">{{paginationValues[1]}}</a></li>
+                    <li id="3" class="page-item"><a class="page-link">{{paginationValues[2]}}</a></li>
+                    <script>
+                        l1 = document.getElementById("1")
+                        l2 = document.getElementById("2")
+                        l3 = document.getElementById("3")
+                        l4 = document.getElementById("4")
+
+                        let params = (new URL(document.location)).searchParams;
+                        let name = params.get("countryName");
+                        let url = "/edit-case?"
+
+                        if (name != null) {
+                            url = url + "countryName=" + name + "&"
+                        }
+                        l1.firstChild.href = url + "pageNumber=" + l1.firstChild.innerText
+                        l2.firstChild.href = url + "pageNumber=" + l2.firstChild.innerText
+                        l3.firstChild.href = url + "pageNumber=" + l3.firstChild.innerText
+                        l4.firstChild.href = url + "pageNumber=1"
+                    </script>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="row my-3 mx-0">
+        <div class="col-12">
+            <table class="table" id="cases">
+                <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Country</th>
+                        {% for header in headings %}
+                        <th scope="col">{{header}}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in cases %}
+                    <tr>
+                        {% for cell in row %}
+                        <td>
+                            <div class="data">
+                                {{cell}}
+                            </div>
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

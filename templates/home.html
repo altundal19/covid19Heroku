@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block title %}Global Situation{% endblock %}
+{% block content %}
+<div class="content-container">
+    <div class="container mx-auto">
+        <h3 class="text-center fw-bold mb-5">Covid19 Data All Over The World</h3>
+        <div class="row d-flex justify-content-center">
+
+            <div class="card col-6 home-card text-start ">
+                <h5 class="card-subtitle text-danger">Total Cases</h5>
+                <h6 class="card-title mb-2 my-2 fs-3 text-secondary">{{ totalCases }}</h6>
+            </div>
+            <div class="card col-6 home-card text-start">
+                <h5 class="card-subtitle text-danger">Total Deaths</h5>
+                <h6 class="card-title mb-2 my-2 fs-3 text-secondary">{{ totalDeaths }}</h6>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+            <div class="card home-card text-start ">
+                <h5 class="card-subtitle text-danger">Total Tests</h5>
+                <h6 class="card-title mb-2 my-2 fs-3 text-secondary">{{ totalTests }}</h6>
+            </div>
+            <div class="card home-card text-start">
+                <h5 class="card-subtitle text-danger">Total Vaccinations</h5>
+                <h6 class="card-title mb-2 my-2 fs-3 text-secondary">{{ totalVacs }}</h6>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

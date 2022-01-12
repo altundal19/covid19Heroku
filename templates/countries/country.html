@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block title %}Country{% endblock %}
+{% block content %}
+
+<div class="container">
+    {% if countryInfo['name'] == -1 %}
+    <h1>Data could not be found.</h1>
+    {% else %}
+    <div class="card text-center">
+        <div class="mx-0 card-header fw-bold row d-flex justify-content-center">
+            <h3 class="col-12">{{ countryInfo['name'] }}</h3>
+        </div>
+        <div class="card-body">
+            <div class="country-info-container mt-3 mb-5">
+                <h5 class="fs-6 card-title"><span class="fw-bold me-2">Population:</span> {{ countryInfo['population']
+                    }}
+                </h5>
+                <h5 class="fs-6 card-title"><span class="fw-bold me-2">Share of the population that is 65 years and
+                        older: </span>{{
+                    countryInfo['age_65_older'] }}
+                </h5>
+                <h5 class="fs-6 card-title"><span class="fw-bold me-2">Share of the population that is 70 years and
+                        older in 2015: </span>{{
+                    countryInfo['age_70_older'] }}</h5>
+                <h5 class="fs-6 card-title"><span class="fw-bold me-2">Median age of the population, UN projection for
+                        2020:</span> {{
+                    countryInfo['median_age'] }}</h5>
+                <h5 class="fs-6 card-title"><span class="fw-bold me-2">Share of the population with basic handwashing
+                        facilities on
+                        premises, most
+                        recent year available:</span> {{
+                    countryInfo['handwashing_facilities'] }}</h5>
+                <h5 class="fs-6 card-title"><span class="fw-bold me-2">Hospital beds per 1,000 people, most recent year
+                        available since
+                        2010:</span> {{
+                    countryInfo['hospital_beds_per_thousand'] }}</h5>
+            </div>
+            <a href="{{ url_for('countries_page') }}" class="btn btn-warning active col-2 me-2" role="button"
+                aria-pressed="true">Go
+                back</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
